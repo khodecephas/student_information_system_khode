@@ -1,0 +1,194 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f8f9fc;
+  color: #333;
+}
+
+/* ---------------- Auth Pages ---------------- */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #eef1f7;
+}
+
+.auth-card {
+  width: 350px;
+  padding: 30px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+}
+
+.auth-card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #444;
+}
+
+.auth-card form input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.auth-card form button {
+  width: 100%;
+  padding: 12px;
+  background: #4e73df;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.auth-card form button:hover {
+  background: #3c5dc9;
+}
+
+.auth-card p {
+  text-align: center;
+  margin-top: 10px;
+}
+
+
+/* Reset / base */
+
+/* Sidebar */
+aside {
+  background-color: #ffffff;
+}
+aside nav a {
+  color: #555;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s;
+}
+aside nav a:hover {
+  background-color: #f0f0f0;
+}
+aside nav a .fas {
+  width: 20px;
+}
+
+/* Main */
+main {
+  min-height: 100vh;
+}
+.card-soft {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card-soft:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 20px rgba(0,0,0,0.08);
+}
+.card-header {
+  font-size: 1rem;
+  color: #777;
+}
+.card-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-top: 8px;
+  color: #333;
+}
+
+/* ===== Colorful Soft UI Dashboard ===== */
+
+:root{
+  --bg:#f5f7fa;
+  --card:#ffffff;
+  --muted:#7b8a97;
+  --accent:#6c8cf5;
+  --soft-shadow: 0 8px 24px rgba(44, 62, 80, 0.06);
+
+  /* Colors */
+  --grad1: linear-gradient(135deg, #6c63ff, #48c6ef);
+  --grad2: linear-gradient(135deg, #ff758c, #ff7eb3);
+  --grad3: linear-gradient(135deg, #43e97b, #38f9d7);
+  --grad4: linear-gradient(135deg, #f6d365, #fda085);
+  --grad5: linear-gradient(135deg, #a18cd1, #fbc2eb);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: "Poppins", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background:var(--bg);
+  color:#1f2937;
+}
+
+/* layout */
+.soft-wrapper{min-height:100vh; display:flex;}
+
+/* sidebar */
+.soft-sidebar{
+  width:260px;
+  background:linear-gradient(180deg,#6c63ff 0%, #48c6ef 100%);
+  color:white;
+  padding:28px 18px;
+  box-shadow: 0 8px 30px rgba(20,20,20,0.1);
+}
+.brand h4{margin:0; font-weight:700; color:#fff}
+.soft-nav{margin-top:22px; display:flex; flex-direction:column; gap:8px}
+.nav-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:white;
+  padding:10px 12px;
+  border-radius:10px;
+  text-decoration:none;
+  transition: all .15s ease;
+}
+.nav-item:hover{background:rgba(255,255,255,0.15); transform:translateX(6px)}
+.nav-item.active{background:rgba(255,255,255,0.25)}
+
+/* main area */
+.soft-main{padding:28px 36px}
+
+/* avatar */
+.avatar{width:44px; height:44px; border-radius:50%; object-fit:cover; border:3px solid #48c6ef}
+
+/* cards grid */
+.grid-cards{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap:18px;
+}
+
+/* soft colorful cards */
+.card-soft{
+  padding:20px;
+  border-radius:14px;
+  color:white;
+  box-shadow: var(--soft-shadow);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.card-soft:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(44,62,80,0.2);
+}
+.card-label{font-size:0.9rem; opacity:0.9}
+.card-value{font-size:1.9rem; font-weight:700; margin-top:6px}
+
+/* assign gradient colors */
+.card-soft:nth-child(1){background:var(--grad1);}
+.card-soft:nth-child(2){background:var(--grad2);}
+.card-soft:nth-child(3){background:var(--grad3);}
+.card-soft:nth-child(4){background:var(--grad4);}
+.card-soft:nth-child(5){background:var(--grad5);}

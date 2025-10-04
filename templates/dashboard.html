@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-gray-100">
+
+  <!-- Sidebar -->
+  <div class="flex">
+    <aside class="w-64 bg-gradient-to-b from-indigo-600 to-purple-700 min-h-screen text-white p-6">
+      <h1 class="text-2xl font-bold mb-8">Admin Panel</h1>
+      <nav class="space-y-4">
+        <a href="/dashboard" class="block px-4 py-2 rounded-lg bg-indigo-500">Dashboard</a>
+        <a href="/logout" class="block px-4 py-2 rounded-lg hover:bg-indigo-500">Logout</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-8">
+      <!-- Top Navbar -->
+      <div class="flex justify-between items-center bg-white rounded-xl shadow p-4 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800">Dashboard</h2>
+        <div class="flex items-center space-x-4">
+          <span class="text-gray-700 font-semibold">{{ admin_username }}</span>
+          <img src="{{ admin_avatar or url_for('static', filename='images/default-avatar.png') }}" 
+               alt="Avatar" class="w-10 h-10 rounded-full border">
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-8">
+        <div class="bg-white rounded-xl shadow p-6">
+          <h3 class="text-lg font-semibold">Total Students</h3>
+          <p class="text-3xl font-bold text-indigo-600">{{ total_students }}</p>
+        </div>
+        <div class="bg-white rounded-xl shadow p-6">
+          <h3 class="text-lg font-semibold">Departments</h3>
+          <p class="text-3xl font-bold text-green-600">{{ total_departments }}</p>
+        </div>
+        <div class="bg-white rounded-xl shadow p-6">
+          <h3 class="text-lg font-semibold">Faculties</h3>
+          <p class="text-3xl font-bold text-purple-600">{{ total_faculties }}</p>
+        </div>
+        <div class="bg-white rounded-xl shadow p-6">
+          <h3 class="text-lg font-semibold">Male Students</h3>
+          <p class="text-3xl font-bold text-blue-600">{{ male_students }}</p>
+        </div>
+        <div class="bg-white rounded-xl shadow p-6">
+          <h3 class="text-lg font-semibold">Female Students</h3>
+          <p class="text-3xl font-bold text-pink-600">{{ female_students }}</p>
+        </div>
+      </div>
+
+      <!-- Students Management -->
+      <div class="bg-white rounded-xl shadow p-6">
+        <div class="flex justify-between mb-4">
+          <h3 class="text-xl font-bold">Students</h3>
+          <button onclick="openAddModal()" 
+                  class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg">
+            + Add Student
+          </button>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="flex space-x-4 mb-4">
+          <input type="text" placeholder="Search by Name or Matric No..." 
+                 class="w-1/2 border rounded-lg px-3 py-2">
+          <select class="border rounded-lg px-3 py-2">
+            <option value="">Filter by Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+
+        <!-- Students Table -->
+        <table class="w-full border-collapse">
+          <thead>
+            <tr class="bg-gray-200 text-left">
+              <th class="p-3">Name</th>
+              <th class="p-3">Matric No</th>
+              <th class="p-3">Department</th>
+              <th class="p-3">Faculty</th>
+              <th class="p-3">Level</th>
+              <th class="p-3">Gender</th>
+              <th class="p-3">Phone</th>
+              <th class="p-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for student in students %}
+            <tr class="border-b">
+              <td class="p-3">{{ student.name }}</td>
+              <td class="p-3">{{ student.matric_no }}</td>
+              <td class="p-3">{{ student.department }}</td>
+              <td class="p-3">{{ student.faculty }}</td>
+              <td class="p-3">{{ student.level }}</td>
+              <td class="p-3">{{ student.gender }}</td>
+              <td class="p-3">{{ student.phone }}</td>
+              <td class="p-3 space-x-2">
+                <button onclick="openEditModal('{{ student.id }}', '{{ student.name }}', '{{ student.matric_no }}', '{{ student.department }}', '{{ student.faculty }}', '{{ student.level }}', '{{ student.gender }}', '{{ student.phone }}')" 
+                        class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-lg">Edit</button>
+                <button onclick="deleteStudent('{{ student.id }}')" 
+                        class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg">Delete</button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <div class="flex justify-end mt-4 space-x-2">
+          <button class="px-3 py-1 bg-gray-200 rounded-lg">Prev</button>
+          <button class="px-3 py-1 bg-indigo-600 text-white rounded-lg">1</button>
+          <button class="px-3 py-1 bg-gray-200 rounded-lg">2</button>
+          <button class="px-3 py-1 bg-gray-200 rounded-lg">Next</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add/Edit Student Modal -->
+  <div id="studentModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center">
+    <div class="bg-white rounded-xl p-6 w-1/2">
+      <h3 id="modalTitle" class="text-xl font-bold mb-4">Add Student</h3>
+      <form id="studentForm" method="POST">
+        <input type="hidden" name="id" id="studentId">
+        <div class="grid grid-cols-2 gap-4">
+          <input type="text" name="name" id="name" placeholder="Name" class="border rounded-lg px-3 py-2">
+          <input type="text" name="matric_no" id="matric_no" placeholder="Matric No" class="border rounded-lg px-3 py-2">
+          <input type="text" name="department" id="department" placeholder="Department" class="border rounded-lg px-3 py-2">
+          <input type="text" name="faculty" id="faculty" placeholder="Faculty" class="border rounded-lg px-3 py-2">
+          <input type="text" name="level" id="level" placeholder="Level" class="border rounded-lg px-3 py-2">
+          <select name="gender" id="gender" class="border rounded-lg px-3 py-2">
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+          <input type="text" name="phone" id="phone" placeholder="Phone" class="border rounded-lg px-3 py-2">
+        </div>
+        <div class="flex justify-end space-x-4 mt-6">
+          <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-400 text-white rounded-lg">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function openAddModal() {
+      document.getElementById("modalTitle").innerText = "Add Student";
+      document.getElementById("studentForm").reset();
+      document.getElementById("studentModal").classList.remove("hidden");
+    }
+
+    function openEditModal(id, name, matric_no, department, faculty, level, gender, phone) {
+      document.getElementById("modalTitle").innerText = "Edit Student";
+      document.getElementById("studentId").value = id;
+      document.getElementById("name").value = name;
+      document.getElementById("matric_no").value = matric_no;
+      document.getElementById("department").value = department;
+      document.getElementById("faculty").value = faculty;
+      document.getElementById("level").value = level;
+      document.getElementById("gender").value = gender;
+      document.getElementById("phone").value = phone;
+      document.getElementById("studentModal").classList.remove("hidden");
+    }
+
+    function closeModal() {
+      document.getElementById("studentModal").classList.add("hidden");
+    }
+
+    function deleteStudent(id) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "This will permanently delete the student.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#e11d48',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = `/delete_student/${id}`;
+        }
+      });
+    }
+  </script>
+</body>
+</html>
